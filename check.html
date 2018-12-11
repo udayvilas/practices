@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {{firstName + " " + lastName}}
+<!--
+<div ng-repeat="list in menulist">	
+	<input type="checkbox" ng-model="list.selected" ng-value="existing_list[$index].selected" ><label>{{list.name}} - {{existing_list[$index].selected}}</label>
+	<div ng-repeat="slist in list.mlist" style="margin-left: 30px" >
+		<input type="checkbox" ng-model="slist.selected" 
+			ng-value="slist.selected = existing_list[$parent.$index].mlist[$index].selected" ><label>{{slist.name}} - {{existing_list[$parent.$index].mlist[$index].selected}}</label>
+		<div ng-repeat="sblist in slist.submenu" style="margin-left: 30px" >
+			<input type="checkbox" ng-model="sblist.selected" 
+			ng-value="sblist.selected = existing_list[$parent.$parent.$index].mlist[$parent.$index].submenu[$index].selected"
+			><label>{{sblist.name}}</label>
+		</div>
+	</div>
+</div>
+
+-->
+
+<div ng-repeat="list in menulist">	
+	<input type="checkbox" ng-model="list.selected"  ><label>{{list.name}} - {{existing_list[$index].selected}}</label>
+	<div ng-repeat="slist in list.mlist" style="margin-left: 30px" >
+		<input type="checkbox" ng-model="slist.selected" 
+			 ><label>{{slist.name}} - {{existing_list[$parent.$index].mlist[$index].selected}}</label>
+		<div ng-repeat="sblist in slist.submenu" style="margin-left: 30px" >
+			<input type="checkbox" ng-model="sblist.selected" 
+			
+			><label>{{sblist.name}}</label>
+		</div>
+	</div>
+</div>
+
+<input type="submit" value="submit" ng-click="datasub()" >
+
+</div>
+
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $log) {
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+	
+	$scope.menulist = [
+						{
+							'mid':'m1', 
+							'name':'menu one', 
+							selected : false,
+							'mlist': [ 
+										{'id':'12','name':'first',selected:false,
+											'submenu':
+												[
+													{'sid':'21','name':'sub first', selected:false }
+												]
+										},
+										{'id':'23','name':'second',selected:false,
+											'submenu':
+												[
+													{'sid':'32','name':'sub second', selected:false } 
+												]
+										}
+									]
+						},
+						{
+							'mid':'m2', 
+							'name':'menu two', 
+							selected : false,
+							'mlist': [ 
+										{'id':'12','name':'first',selected:false,
+											'submenu':
+												[
+													{'sid':'21','name':'sub first', selected:false }
+												]
+										},
+										{'id':'23','name':'second',selected:false,
+											'submenu':
+												[
+													{'sid':'32','name':'sub second', selected:false } 
+												]
+										}
+									]
+						}
+					];
+					
+					
+	$scope.existing_list = 	[
+						{
+							'mid':'m1', 
+							'name':'menu one', 
+							selected : true,
+							'mlist': [ 
+										{'id':'12','name':'first',selected:true,
+											'submenu':
+												[
+													{'sid':'21','name':'sub first', selected:true }
+												]
+										},
+										{'id':'23','name':'second',selected:true,
+											'submenu':
+												[
+													{'sid':'32','name':'sub second', selected:false } 
+												]
+										}
+									]
+						},
+						{
+							'mid':'m2', 
+							'name':'menu two', 
+							selected : true,
+							'mlist': [ 
+										{'id':'12','name':'first',selected:true,
+											'submenu':
+												[
+													{'sid':'21','name':'sub first', selected:false }
+												]
+										},
+										{'id':'23','name':'second',selected:false,
+											'submenu':
+												[
+													{'sid':'32','name':'sub second', selected:false } 
+												]
+										}
+									]
+						}
+					];
+	//$scope.existing_list = [];
+	var i = j = k = 0;
+	for(i = 0; i < $scope.existing_list.length; i++ )
+	{
+		$scope.menulist[i].selected = $scope.existing_list[i].selected;
+		for(j = 0; j < $scope.menulist[i].mlist.length; j++)
+		{
+			$scope.menulist[i].mlist[j].selected = $scope.existing_list[i].mlist[j].selected;
+			for(k = 0; k < $scope.menulist[i].mlist[j].submenu.length; k++  )
+			{
+				$scope.menulist[i].mlist[j].submenu[k].selected = $scope.existing_list[i].mlist[j].submenu[k].selected;
+			}
+		}
+	}
+						
+	$log.log("name " +$scope.menulist[0].name);
+
+	$scope.datasub = function()
+	{
+		$log.log($scope.menulist);
+	}
+	
+	
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {{firstName + " " + lastName}}
+
+<div message text="first">
+	<div message text="..second">
+		<div message text="...third"></div>
+	</div>	
+</div>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+});
+
+app.directive("message", function() {
+    return {
+		compile: function(tElement, tAttributes){
+			console.log(tAttributes.text + " - In Compile");
+			
+			return {
+				pre: function(scope, iElement, iAttrubutes){
+					console.log(iAttrubutes.text + " - In Pre function ");
+				},
+				post: function(scope, iElement, iAttrubutes){
+					console.log(iAttrubutes.text + " - In Post function ");
+				}
+			};
+		},		
+		controller: function($scope, $element, $attrs){
+			console.log( $attrs.text + " - In Controller");
+		}
+        //template : "<h1>Made by a directive!</h1>"
+    };
+});
+
+</script>
+
+</body>
+</html>
